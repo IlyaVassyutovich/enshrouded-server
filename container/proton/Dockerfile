@@ -43,9 +43,8 @@ RUN groupadd -g $CONTAINER_GID steam \
 
 USER steam
 
-RUN echo "Creating game dirs" \
-    && mkdir "$ENSHROUDED_PATH" \
-    && mkdir -p "${ENSHROUDED_PATH}/savegame"
+RUN echo "Creating root game dir" \
+    && mkdir "$ENSHROUDED_PATH"
 
 RUN echo "Loading SteamCMD" \
     && mkdir -p "${STEAMCMD_PATH}/steamapps/compatdata/${STEAM_APP_ID}" \
