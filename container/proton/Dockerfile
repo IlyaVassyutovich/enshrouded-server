@@ -43,20 +43,27 @@ RUN groupadd -g $CONTAINER_GID steam \
 
 USER steam
 
-RUN mkdir "$ENSHROUDED_PATH" \
-    && mkdir -p "${ENSHROUDED_PATH}/savegame" \
-    && mkdir -p "${STEAMCMD_PATH}/compatibilitytools.d" \
+RUN echo "Creating game dirs" \
+    && mkdir "$ENSHROUDED_PATH" \
+    && mkdir -p "${ENSHROUDED_PATH}/savegame"
+
+RUN echo "Loading SteamCMD" \
     && mkdir -p "${STEAMCMD_PATH}/steamapps/compatdata/${STEAM_APP_ID}" \
     && curl -sqL https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz | tar zxvf - -C ${STEAMCMD_PATH} \
     && chmod +x ${STEAMCMD_PATH}/steamcmd.sh \
     && ${STEAMCMD_PATH}/steamcmd.sh +quit \
-    && mkdir -p /home/steam/.steam \
+    && mkdir -p /home/steam/.steam
+
+RUN echo "Configuring Steam SDK" \
     && ln -s ${STEAMCMD_PATH}/linux64 ${STEAM_SDK64_PATH} \
     && ln -s ${STEAM_SDK64_PATH}/steamclient.so ${STEAM_SDK64_PATH}/steamservice.so \
     && ln -s ${STEAMCMD_PATH}/linux32 ${STEAM_SDK32_PATH} \
-    && ln -s ${STEAM_SDK32_PATH}/steamclient.so ${STEAM_SDK32_PATH}/steamservice.so \
+    && ln -s ${STEAM_SDK32_PATH}/steamclient.so ${STEAM_SDK32_PATH}/steamservice.so
+
+RUN echo "Loading Proton" \
+    && mkdir -p "${STEAMCMD_PATH}/compatibilitytools.d" \
     && curl -sqL "$GE_PROTON_URL" | tar zxvf - -C "${STEAMCMD_PATH}/compatibilitytools.d/" 
-    
+
 COPY entrypoint.sh /home/steam/entrypoint.sh
 COPY enshrouded_server_example.json /home/steam/enshrouded_server_example.json
 
