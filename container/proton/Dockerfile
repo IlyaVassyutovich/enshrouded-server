@@ -52,8 +52,6 @@ ENV STEAM_COMPAT_DATA_PATH "${STEAMCMD_PATH}/steamapps/compatdata/${STEAM_APP_ID
 ENV STEAM_COMPAT_TOOLS_PATH "${STEAMCMD_PATH}/compatibilitytools.d"
 
 ENV UMU_ID 0
-ENV GE_PROTON_VERSION "9-18"
-ENV GE_PROTON_URL "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton${GE_PROTON_VERSION}/GE-Proton${GE_PROTON_VERSION}.tar.gz"
 ENV PROTON_UNPACKED "${STEAM_HOME}/proton"
 
 RUN echo "Creating user steam" \
@@ -91,8 +89,12 @@ RUN echo "Configuring Steam SDK" \
 # Proton
 FROM steam AS proton
 
+ENV GE_PROTON_VERSION "9-26"
+ENV GE_PROTON_URL "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton${GE_PROTON_VERSION}/GE-Proton${GE_PROTON_VERSION}.tar.gz"
+ENV GE_PROTON_SHA "sha256:f299a23a91e0096e1a438ef10304318ecb960cdc2c4204a33b725ddb4737dbdd"
+
 ADD --chown=$CONTAINER_GID:$CONTAINER_GID \
-    --checksum=sha256:6b0da8f3f013275c876b3ee9c4b13dd64cce4270a0aa3aa231464bf60d53a3cb \
+    --checksum=$GE_PROTON_SHA \
     $GE_PROTON_URL /tmp/proton.tar.gz
 
 RUN echo "Unpacking Proton" \
