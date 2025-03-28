@@ -108,6 +108,15 @@ ln -sf /proc/1/fd/1 "${ENSHROUDED_PATH}/logs/enshrouded_server.log"
 # Launch Enshrouded
 echo "$(timestamp) INFO: Starting Enshrouded Dedicated Server"
 
+if [ -z "${GE_PROTON_VERSION}" ]; then
+    echo ""
+    echo "$(timestamp) ERROR: Environment variable with installed Proton version (\`GE_PROTON_VERSION\`) is not set."
+    echo "This variable is typically defined in the Dockerfile."
+    echo "Please check that the variable is properly declared and that the declaration is in the correct build stage."
+    echo ""
+    exit 1
+fi
+
 ${STEAMCMD_PATH}/compatibilitytools.d/GE-Proton${GE_PROTON_VERSION}/proton run ${ENSHROUDED_PATH}/enshrouded_server.exe &
 
 # Find pid for enshrouded_server.exe

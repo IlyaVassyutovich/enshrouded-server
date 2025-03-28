@@ -52,6 +52,10 @@ ENV STEAM_COMPAT_DATA_PATH "${STEAMCMD_PATH}/steamapps/compatdata/${STEAM_APP_ID
 ENV STEAM_COMPAT_TOOLS_PATH "${STEAMCMD_PATH}/compatibilitytools.d"
 
 ENV UMU_ID 0
+
+# GE_PROTON_VERSION MUST be in this stage! It is referenced not only by `proton` stage
+# but also in entrypoint.sh
+ENV GE_PROTON_VERSION "9-26"
 ENV PROTON_UNPACKED "${STEAM_HOME}/proton"
 
 RUN echo "Creating user steam" \
@@ -89,7 +93,6 @@ RUN echo "Configuring Steam SDK" \
 # Proton
 FROM steam AS proton
 
-ENV GE_PROTON_VERSION "9-26"
 ENV GE_PROTON_URL "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton${GE_PROTON_VERSION}/GE-Proton${GE_PROTON_VERSION}.tar.gz"
 ENV GE_PROTON_SHA "sha256:f299a23a91e0096e1a438ef10304318ecb960cdc2c4204a33b725ddb4737dbdd"
 
