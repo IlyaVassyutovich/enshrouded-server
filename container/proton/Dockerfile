@@ -99,7 +99,7 @@ ADD --chown=$CONTAINER_GID:$CONTAINER_GID \
 
 RUN echo "Unpacking Proton" \
     && mkdir -p "${PROTON_UNPACKED}" \
-    && tar zxvf /tmp/proton.tar.gz -C "${PROTON_UNPACKED}"
+    && tar zxf /tmp/proton.tar.gz -C "${PROTON_UNPACKED}"
 
 
 
